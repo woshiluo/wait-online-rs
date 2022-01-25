@@ -1,0 +1,13 @@
+[Unit]
+Description=Restart wait-online on resume
+Before=sleep.target
+StopWhenUnneeded=yes
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStop=/usr/bin/systemctl try-restart wait-online-rs.service
+TimeoutStopSec=infinity
+
+[Install]
+WantedBy=sleep.target
