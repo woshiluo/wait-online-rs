@@ -21,6 +21,7 @@ fn main() {
         std::thread::sleep(std::time::Duration::from_secs(5));
     }
 
+    let _ = sd_notify::notify(true, &[NotifyState::Ready]);
     let _fd = fcntl::open::<std::path::Path>(
         &path,
         fcntl::OFlag::O_RDONLY,
