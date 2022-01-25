@@ -11,17 +11,18 @@ fn main() {
     }
 
     loop {
+        let _ = sd_notify::notify(false, &[sd_notify::NotifyState::Status("Checking...")]).unwrap();
         match reqwest::blocking::get("https://g.cn/generate_204") {
             Ok(rep) if rep.status() == 204 => {
-                println!("Online");
                 break;
             }
-            _ => println!("Offline"),
+            _ => (),
         }
         std::thread::sleep(std::time::Duration::from_secs(5));
     }
 
-    let _ = sd_notify::notify(true, &[sd_notify::NotifyState::Ready]);
+    let _ = sd_notify::notify(false, &[sd_notify::NotifyState::Status("Connected")]).unwrap();
+    let _ = sd_notify::notify(false, &[sd_notify::NotifyState::Ready]).unwrap();
     let _fd = fcntl::open::<std::path::Path>(
         &path,
         fcntl::OFlag::O_RDONLY,
